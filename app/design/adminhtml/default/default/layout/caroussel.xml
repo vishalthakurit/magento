@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <caroussel_adminhtml_caroussel_index>
+        <reference name="content">
+            <block type="caroussel/adminhtml_caroussel" name="caroussel" />
+        </reference>
+    </caroussel_adminhtml_caroussel_index>
+</layout>

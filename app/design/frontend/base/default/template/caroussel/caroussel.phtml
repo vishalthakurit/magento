@@ -1,0 +1,284 @@
+
+<div class="carousel" style='margin-top: 5px'>
+    
+    <?php if (!isset($_REQUEST['location_tag']) && !isset($_REQUEST['pension_tag']) && !isset($_REQUEST['thematic_tag']) && !isset($_REQUEST['thematic_tag2']) && !isset($_REQUEST['checkin_date']) && !isset($_REQUEST['hotel_price']) && !isset($_REQUEST['pacote_price'])) { ?>
+
+        <?php
+        $brand = 'Zarpo Hotéis';
+        $promotion_name='Flash Hotel';
+        if (isset($_REQUEST['pagepacote'])) {
+            $brand = 'Zarpo Pacotes';
+            $promotion_name='Flash Pacote';
+        }
+        if (isset($_REQUEST['vale-presente'])) {
+            $brand = 'Vale Presentes';
+           $promotion_name='Flash Vale Presente';
+        }
+        if (Mage::app()->getWebsite()->getId() == 3) {
+            $brand = 'Zarpo Já';
+            
+             $promotion_name='Flash Zarpo Ja';
+        }
+
+        $carousselImages = unserialize($this->getCarousselImages($brand));
+        $carousselLabels = unserialize($this->getCarousselImagesLabels($brand));
+        $imageNewTab = unserialize($this->getImageNewTab($brand));
+        $imagelabel=unserialize($this->getImageLabel($brand));
+        $promotions='';
+        
+        if (Mage::getSingleton('customer/session')->isLoggedIn() && Mage::getSingleton('customer/session')->getCustomer()->getLiveloMember() == 1 && isset($_COOKIE['livelo_user']) && $_COOKIE['livelo_user'] == 'true') {
+            $livelo_promobox = Mage::getSingleton('livelopartnership/promoboxlivelo')->getCollection()->getFirstItem();
+            if ($livelo_promobox->getData()) {
+                $image_name = unserialize($livelo_promobox->getImageName());
+                $image_link = $livelo_promobox->getImageLink();
+                $image_newtab = unserialize($livelo_promobox->getNewTab());
+                $image_label = unserialize($livelo_promobox->getImageLabel());
+
+                $carousselImages = array('image0' => $image_name['image']) + $carousselImages;
+                $carousselLabels = array('image_link0' => $image_link) + $carousselLabels;
+                $imageNewTab = array('new_tab0' => $image_newtab['new_tab']) + $imageNewTab;
+                $imagelabel = array('image_label0' => $image_label['image_label']) + $imagelabel;
+            }
+        }
+        ?>
+        <?php if (array_filter($carousselImages)) { ?>
+
+            <?php if (count(array_filter($carousselImages)) < 2) { ?>
+
+
+                <div class="carousel_container" style="max-height: 360px; overflow: hidden;position: relative; box-shadow: 3px 4px 4px -2px rgba(0, 0, 0, 0.5); margin-bottom: 40px;">
+                    <ul class="bxslider">  
+
+            <?php
+            $i = 0;
+            $j=0;
+            foreach ($carousselImages as $key => $val) {
+                if ($key != 'image0') {
+                    $i = $i + 1;
+                }
+                $new_tab = '';
+                if ($val) {
+                    if ($key != 'image0') {
+                        $j=$j+1;
+                    }
+                    ?>
+
+                                <li>
+                    <?php if (isset($carousselLabels['image_link' . $i]) && $carousselLabels['image_link' . $i] != '') { ?>
+                                        <?php if (isset($imageNewTab['new_tab' . $i]) && $imageNewTab['new_tab' . $i] != '') {
+                                            $new_tab = 'target="_blank"';
+                                        }
+                                        $image_link_url=$carousselLabels['image_link' . $i];
+                                       
+                                            if (!parse_url($image_link_url, PHP_URL_QUERY)){
+                                                $image_link_url.='?promobox=true';
+                                            }else{
+                                                $image_link_url.='&promobox=true';
+                                            }
+                                        
+                                        ?>
+                                        <a onClick="gtmPromotionClick('<?php echo $val; ?>','<?php echo $promotion_name; ?>','<?php echo $image_link_url; ?>','<?php echo 'promobox-'.$j; ?>');" <?php echo $new_tab; ?> href='<?php echo $image_link_url; ?>' >
+                                        <?php } ?>
+                                        <?php   $imagePath=$this->getImageLabelPath($imagelabel['image_label' . $i]);
+                                                if($imagePath){ ?>
+                                        <img style="width:120px;position: absolute;z-index: 1;display: none;" class="image_label" src="<?php echo $this->getSkinUrl('images/caroussel/'.$imagePath) ; ?>" >
+                                        <?php } ?>
+                                        <?php if($key == 'image0'):?>
+                                            <img style="width:960px;position: relative;" class="mySlides" src="<?php echo Mage::getBaseUrl('media') . 'livelopartnership' . DS . $val; ?>" >
+                                        <?php else: ?>
+                                            <img style="width:960px;position: relative;" class="mySlides" src="<?php echo Mage::getBaseUrl('media') . 'caroussel' . DS . $val; ?>" >
+                                        <?php endif; ?>
+                                        <?php if (isset($carousselLabels['image_link' . $i]) && $carousselLabels['image_link' . $i] != '') { ?>
+                                        </a>
+                                    <?php } ?>
+                                </li>
+
+                                <?php
+                            
+                        $promotions .="{ 'id':'".$val."' ,'name':'".$promotion_name."','creative':'".$image_link_url."' ,'position': 'promobox-".$j."' }";  
+                     }
+                 }
+                  ?>
+
+                    </ul>
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        jQuery('.image_label').show();
+                    });
+                </script>
+                </div>
+            <?php } else { ?>
+                <script src="<?php echo Mage::getBaseUrl(); ?>js/bxslider/jquery.bxslider.min.js"></script>
+                <link href="<?php echo Mage::getBaseUrl(); ?>js/bxslider/bxslidernew1234.css" rel="stylesheet" />
+
+                <style type="text/css">
+
+
+                    .mySlides {
+                        display:none;
+                    }
+
+
+                </style>
+                <div class="carousel_container" style="max-height: 360px; overflow: hidden;position: relative; box-shadow: 3px 4px 4px -2px rgba(0, 0, 0, 0.5); margin-bottom: 40px;">
+                    <ul class="bxslider">  
+
+                        <?php
+                        $i = 0;
+                        $j=0;
+                        foreach ($carousselImages as $key => $val) {
+                            if ($key != 'image0') {
+                                $i = $i + 1;
+                            }
+                            $new_tab = '';
+                            if ($val) {
+                                if ($key != 'image0') {
+                                    $j=$j+1;
+                                }
+                                ?>
+
+                                <li>
+                                    <?php if (isset($carousselLabels['image_link' . $i]) && $carousselLabels['image_link' . $i] != '') { ?>
+                                        <?php if (isset($imageNewTab['new_tab' . $i]) && $imageNewTab['new_tab' . $i] != '') {
+                                            $new_tab = 'target="_blank"';
+                                        }
+                                        $image_link_url=$carousselLabels['image_link' . $i];
+                                        
+                                            if (!parse_url($image_link_url, PHP_URL_QUERY)){
+                                                $image_link_url.='?promobox=true';
+                                            }else{
+                                                $image_link_url.='&promobox=true';
+                                            }
+                                        
+                                        ?>
+                                        <a onClick="gtmPromotionClick('<?php echo $val; ?>','<?php echo $promotion_name; ?>','<?php echo $image_link_url; ?>','<?php echo 'promobox-'.$j; ?>');"  <?php echo $new_tab; ?> href='<?php echo $image_link_url; ?>' >
+                                        <?php } ?>
+                                        <?php   $imagePath=$this->getImageLabelPath($imagelabel['image_label' . $i]);
+                                                if($imagePath){ ?>
+                                        <img style="width:120px;position: absolute;z-index: 1;display: none" class="image_label" src="<?php echo $this->getSkinUrl('images/caroussel/'.$imagePath) ; ?>" >
+                                        <?php } ?>
+                                        <?php if($key == 'image0'):?>
+                                            <img style="width:960px;position: relative;" class="mySlides" src="<?php echo Mage::getBaseUrl('media') . 'livelopartnership' . DS . $val; ?>" >
+                                        <?php else: ?>
+                                            <img style="width:960px;position: relative;" class="mySlides" src="<?php echo Mage::getBaseUrl('media') . 'caroussel' . DS . $val; ?>" >
+                                        <?php endif; ?>
+                                    <?php if (isset($carousselLabels['image_link' . $i]) && $carousselLabels['image_link' . $i] != '') { ?>
+                                        </a>
+                                <?php } ?>
+                                </li>
+
+                                <?php
+                                $promotions .="{ 'id':'".$val."' ,'name':'".$promotion_name."','creative':'".$image_link_url."' ,'position': 'promobox-".$j."' },";  
+
+                            }
+                        }
+                        ?>
+
+                    </ul>
+                    <div id="slider-prev">  </div  >
+                    <div id="slider-next">  </div>
+
+                </div>
+
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        var slider = jQuery('.bxslider').bxSlider({
+                            auto: true,
+                            pager: false,
+                            pause: 6000,
+                            autoHover: true,
+                            nextSelector: '#slider-next',
+                            prevSelector: '#slider-prev',
+                            nextText: '<img src="<?php echo $this->getSkinUrl('images/caroussel/arrow_right.png'); ?>" style="position: absolute; top: 43.05%; width: 50px; right: 2%;display:none" class="scoll_right">',
+                            prevText: '<img  src="<?php echo $this->getSkinUrl('images/caroussel/arrow_left.png'); ?>" style="position: absolute; width: 50px; top: 43.05%; left: 2%;display:none" class="scoll_left">'
+                        });
+                        
+                        jQuery('.image_label').show();
+                        
+                        jQuery(".bx-prev").click(function() {
+                            slider.stopAuto();
+
+                        });
+
+                        jQuery(".bx-prev").mouseover(function() {
+                            var el = jQuery(this);
+                            slider.stopAuto();
+                            el.mouseleave(function() {
+                                slider.startAuto();
+                            });
+                        });
+
+                        jQuery(".bx-next").mouseover(function() {
+                            var el = jQuery(this);
+                            slider.stopAuto();
+                            el.mouseleave(function() {
+                                slider.startAuto();
+                            });
+                        });
+                        
+                        jQuery(".carousel_container").mouseover(function() {
+                             var el = jQuery(this);
+                                 jQuery('.scoll_right').css('display','initial');
+                                 jQuery('.scoll_left').css('display','initial');
+                             el.mouseleave(function() {
+                                 jQuery('.scoll_right').css('display','none');
+                                 jQuery('.scoll_left').css('display','none');
+                            });
+                        });
+                        
+                        jQuery(".bx-next").click(function() {
+                            slider.stopAuto();
+                        });
+                    });
+                </script>
+
+
+
+
+                <?php
+            } 
+              $promotions = preg_replace("/\r|\n/", "", $promotions); 
+              $model = Mage::getModel('zarpo_catalog/guest');
+		 
+            if (Mage::getModel('customer/session')->isLoggedIn() || $model->isGuestAllowed()) {
+                if($promotions){ ?>
+                <script>
+                     jQuery(document).ready(function(){
+                              zarpoLayer.push({
+                                'event':'promotionImpression',
+                                'ecommerce': {
+                                  'promoView': {
+                                    'promotions': [ <?php echo $promotions; ?>]
+                                   }
+                                }
+                            });
+                                                      
+                         });
+                         
+                         function gtmPromotionClick(id,name,creative,position){
+                             
+                                zarpoLayer.push({
+                                    'event':'promotionClick',
+                                    'ecommerce': {
+                                      'promoClick': {
+                                        'promotions': [{
+                                             'id':  id,
+                                             'name':name,
+                                             'creative':  creative,
+                                             'position': position
+                                         }]
+                                       }
+                                    }
+                             });
+                            
+                             }
+                    </script>
+            
+            
+            
+            <?php    }
+            }
+        }
+    }
+    ?>
+</div>

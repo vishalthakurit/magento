@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+         
+    </default>
+    <caroussel_index_index>
+        <reference name="content">
+            <block type="caroussel/caroussel" name="caroussel" template="caroussel/caroussel.phtml" />
+        </reference>
+    </caroussel_index_index>
+</layout> 

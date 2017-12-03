@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category   Excellence
+ * @package    Excellence_Showcase
+ * @author     ModuleCreator
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <modules>
+        <Excellence_Showcase>
+            <version>0.1.2</version>
+        </Excellence_Showcase>
+    </modules>
+    <frontend>
+        <routers>
+            <showcase>
+                <use>standard</use>
+                <args>
+                    <module>Excellence_Showcase</module>
+                    <frontName>showcase</frontName>
+                </args>
+            </showcase>
+        </routers>
+        <layout>
+            <updates>
+                <showcase>
+                    <file>showcase.xml</file>
+                </showcase>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<showcase>
+				<use>admin</use>
+				<args>
+					<module>Excellence_Showcase</module>
+					<frontName>showcase</frontName>
+				</args>
+			</showcase>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+            <testi>
+                <children>
+        			<showcase module="showcase">
+        				<title>Manage Showcase</title>
+        				<sort_order>1</sort_order>
+                        <action>showcase/adminhtml_showcase</action>  
+        			</showcase>
+                </children>
+            </testi>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+                        <testi>
+                            <children>
+                                <showcase module="showcase">
+                                    <title>Manage Showcase</title>
+                                    <sort_order>11</sort_order>
+                                </showcase>
+                            </children>
+                        </testi>
+					</children>
+                    <children>
+                        <Excellence_Showcase>
+                            <title>Showcase Module</title>
+                            <sort_order>10</sort_order>
+                        </Excellence_Showcase>
+                    </children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<showcase>
+					<file>showcase.xml</file>
+				</showcase>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <showcase>
+                <class>Excellence_Showcase_Model</class>
+                <resourceModel>showcase_mysql4</resourceModel>
+            </showcase>
+            <showcase_mysql4>
+                <class>Excellence_Showcase_Model_Mysql4</class>
+                <entities>
+                    <showcase>
+                        <table>showcase</table>
+                    </showcase>
+                </entities>
+            </showcase_mysql4>
+        </models>
+        <resources>
+            <showcase_setup>
+                <setup>
+                    <module>Excellence_Showcase</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </showcase_setup>
+            <showcase_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </showcase_write>
+            <showcase_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </showcase_read>
+        </resources>
+        <blocks>
+            <showcase>
+                <class>Excellence_Showcase_Block</class>
+            </showcase>
+        </blocks>
+        <helpers>
+            <showcase>
+                <class>Excellence_Showcase_Helper</class>
+            </showcase>
+        </helpers>
+    </global>
+</config>

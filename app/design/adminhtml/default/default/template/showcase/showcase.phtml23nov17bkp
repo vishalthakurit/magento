@@ -1,0 +1,98 @@
+<?php
+$showcase = Mage::registry('showcase_data');
+$brandname = Mage::registry('showcase_data')->getBrandName();
+$Imagename = unserialize(Mage::registry('showcase_data')->getImageName());
+$ImageUrl = unserialize(Mage::registry('showcase_data')->getImageUrl());
+$imageNewTab = unserialize(Mage::registry('showcase_data')->getNewTab());
+$imagelabel= unserialize(Mage::registry('showcase_data')->getImageLabel());
+ 
+ ?>
+
+ <style type="text/css">
+    .form-list td.label,.form-list td.label label{
+        width: 130px;
+        padding-right: 0px !important;
+    }
+</style>
+<div id="showcase_tabs_form_section_content">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Showcase Images</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="showcase_form">
+            <div class="hor-scroll">
+                <div style="height:45px;">
+                            <div class="label" style="font-size:18px"><b ><?php echo $brandname; ?> </b></div>
+
+                        </div>
+                <table cellspacing="0" class="form-list" style="width:100%"> 
+                    <tbody>
+                        
+                        <?php
+                        for ($i = 1; $i < 21; $i++) {
+                            ?>
+                            <tr>
+                                <td class="label"  style="width: 6.4%;"><label for="image " style="width: 70px; margin-left: 10px;"><b><?php echo 'Image' . $i; ?></b> </label></td>
+                                <td class="label" style="width: 23.15%;"> 
+                                    <div style="width: 100%;">
+                                    <?php 
+                                    $title='No file selected.';
+                                    if(isset($Imagename['image'. $i]) && $Imagename['image'. $i]!=''){ ?>
+                                    <image style="float: left; height: 22px; width: 25px;" src='<?php echo Mage::getBaseUrl('media').'showcase'.DS.$Imagename['image'. $i]; ?>' />
+                                    <?php  $title=$Imagename['image'. $i];
+                                    } ?>
+                                    <input title='<?php echo $title; ?>' id="<?php echo 'image' . $i; ?>" name="<?php echo 'image' . $i; ?>" value="" class="  input-text     " type="file" style="border:none;background: none;padding: 0px; float:right;width: 190px">
+                                     </div>
+                                </td>
+                                <td class="label" style="width: 9%;">  
+                                    <input id="<?php echo 'image_link' . $i; ?>" name="<?php echo 'image_link' . $i; ?>" value="<?php echo $ImageUrl['image_link'. $i];?>" class="  input-text     " type="text">
+                                </td>
+                                <td class="label" style="width: 13.66%;">  
+                                    <input id="<?php echo 'new_tab' . $i; ?>" name="<?php echo 'new_tab' . $i; ?>" value="1" type="checkbox" <?php if(isset($imageNewTab['new_tab'. $i]) && $imageNewTab['new_tab'. $i]!=''){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'new_tab' . $i; ?>"> Open in new tab</label>
+                                </td>
+                                <td class="label" style="width: 6.32%;">  
+                                    <input id="<?php echo 'image_label1' . $i; ?>" name="<?php echo 'image_label' . $i; ?>" class="<?php echo 'image_label' . $i; ?>" value="Hotel" type="radio" <?php if(isset($imagelabel['image_label'. $i]) && $imagelabel['image_label'. $i]=='Hotel'){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'image_label1' . $i; ?>"> Hotel</label>
+                                </td>
+                                <td class="label" style="width: 6.32%;">  
+                                    <input id="<?php echo 'image_label2' . $i; ?>" name="<?php echo 'image_label' . $i; ?>"  class="<?php echo 'image_label' . $i; ?>" value="Pacote" type="radio" <?php if(isset($imagelabel['image_label'. $i]) && $imagelabel['image_label'. $i]=='Pacote'){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'image_label2' . $i; ?>"> Pacote</label>
+                                </td>
+                                <td class="label" style="width: 4.32%;">  
+                                    <input id="<?php echo 'image_label3' . $i; ?>" name="<?php echo 'image_label' . $i; ?>"  class="<?php echo 'image_label' . $i; ?>" value="Já" type="radio" <?php if(isset($imagelabel['image_label'. $i]) && $imagelabel['image_label'. $i]=='Já'){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'image_label3' . $i; ?>"> Já</label>
+                                </td>
+                                <td class="label" style="width: 5.80%;">  
+                                    <input id="<?php echo 'image_label4' . $i; ?>" name="<?php echo 'image_label' . $i; ?>"  class="<?php echo 'image_label' . $i; ?>" value="Vale" type="radio" <?php if(isset($imagelabel['image_label'. $i]) && $imagelabel['image_label'. $i]=='Vale'){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'image_label4' . $i; ?>"> Vale</label>
+                                </td>
+                                <td class="label" style="width: 6.32%;">  
+                                    <input id="<?php echo 'image_label5' . $i; ?>" name="<?php echo 'image_label' . $i; ?>"  class="<?php echo 'image_label' . $i; ?>" value="None" type="radio" <?php if(isset($imagelabel['image_label'. $i]) && $imagelabel['image_label'. $i]=='None'){ echo 'checked'; } ?>> 
+                                    <label style="vertical-align:middle;display:inline" for="<?php echo 'image_label5' . $i; ?>"> None</label>
+                                </td>
+                                <!-- <td class="label" style="width: 6.4%; text-align: right;">  
+                                    <button id="<?php echo 'delete' . $i; ?>" title="Delete" type="button" class="scalable" style="" onclick="del(this.id)">
+                                        <span><span><span>Delete</span></span></span>
+                                    </button>
+                                </td> -->
+
+                            </tr>                  
+                        <?php
+                            }
+                        ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function del(id){
+            document.getElementById(id).parentNode.parentNode.remove();
+
+    }
+    </script>

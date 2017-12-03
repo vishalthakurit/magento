@@ -1,0 +1,346 @@
+<?php if($this->getData('hotel_bubble') == 'top_four_showcase_bubble') { ?>
+
+<?php
+    
+    $brand = 'Zarpo Showcase';
+    $showcaseData_bubble = Mage::getModel('showcase/showcase')->load($brand, 'brand_name');
+    $showcaseImages_bubble = unserialize($showcaseData_bubble->getImageName());
+    $showcaseTagLabels_bubble = unserialize($showcaseData_bubble->getTagLabel());
+    $promotions='';
+    $new_hotel_range_bubble = array('below_200'=>'Até R$200 por quarto por dia','below_400'=>'Até R$400 por quarto por dia','below_600'=>'Até R$600 por quarto por dia','below_800'=>'Até R$800 por quarto por dia','below_1000'=>'Até R$1000 por quarto por dia','above_1000'=>'Acima de R$1000 por quarto por dia');
+    $k = 0;
+    $i = 0;
+    $j = 0;
+    $mini_class = 1;
+    foreach ($showcaseImages_bubble as $key => $val) {
+        if($k < 4)
+        {
+        if ($key != 'image0') {
+            $i = $i + 1;
+        }
+        $new_tab = '';
+        if ($val) {
+            if ($key != 'image0') {
+                $j=$j+1;
+            }
+            
+
+            $class='';
+
+            if(($mini_class%2)==0)
+            {
+                $class='showcase-destaque-hotel-mini_bubble right';
+            }
+            else
+            {
+                $class='showcase-destaque-hotel-mini_bubble left';
+            }
+            $mini_class++;
+
+            ?>
+
+            <div class="flash-block <?php echo $class; ?>" >
+                <?php if (isset($showcaseTagLabels_bubble['image_link' . $i]) && $showcaseTagLabels_bubble['image_link' . $i] != '') { ?>
+                    <?php if (isset($imageNewTab['new_tab' . $i]) && $imageNewTab['new_tab' . $i] != '') {
+                        $new_tab = 'target="_blank"';
+                    }
+                    $url = ''; $new_price_tag = '';
+                    $locationTag = ''; $thematicTag = ''; $pensionTag = ''; $thematic2Tag = ''; $priceTag = '';
+                    $image_link_url = rtrim($showcaseTagLabels_bubble['image_link' . $i], '&');
+                    //echo $image_link_url.'<br>';
+                    $select_values = explode('&', $image_link_url);
+                    foreach($select_values as $key => $value)
+                    {
+                        $b = explode('=', $value);
+                        $tags_array[$b[0]] = $b[1];
+                    }
+
+                    if(array_key_exists('location_tag['.$i.']', $tags_array))
+                    {
+                        $locationTag = $tags_array['location_tag['.$i.']'];
+                    }
+                    if(array_key_exists('thematic_tag['.$i.']', $tags_array))
+                    {
+                        $thematicTag = $tags_array['thematic_tag['.$i.']'];
+                    }
+                    if(array_key_exists('pension_tag['.$i.']', $tags_array))
+                    {
+                        $pensionTag = $tags_array['pension_tag['.$i.']'];
+                    }
+                    if(array_key_exists('thematic2_tag['.$i.']', $tags_array))
+                    {
+                        $thematic2Tag = $tags_array['thematic2_tag['.$i.']'];
+                    }
+                    if(array_key_exists('price_tag['.$i.']', $tags_array))
+                    {
+                        $priceTag = $tags_array['price_tag['.$i.']'];
+                        if (array_key_exists($priceTag, $new_hotel_range_bubble)) {
+                            $new_price_tag = $new_hotel_range_bubble[$priceTag];
+                        }
+                    }
+
+                    if($locationTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?location_tag='.str_replace(' ','_',$locationTag);
+                        }else{
+                            $url .= '&location_tag='.str_replace(' ','_',$locationTag);
+                        }
+                        
+                    }
+                    if($thematicTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?thematic_tag='.str_replace(' ','_',$thematicTag);
+                        }else{
+                            $url .= '&thematic_tag='.str_replace(' ','_',$thematicTag);
+                        }
+                        
+                    }
+                    if($pensionTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?pension_tag='.str_replace(' ','_',$pensionTag);
+                        }else{
+                            $url .= '&pension_tag='.str_replace(' ','_',$pensionTag);
+                        }
+
+                    }
+                    if($thematic2Tag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?thematic_tag2='.str_replace(' ','_',$thematic2Tag);
+                        }else{
+                            $url .= '&thematic_tag2='.str_replace(' ','_',$thematic2Tag);
+                        }
+                        
+                    }
+                    if($priceTag)
+                    {
+                         if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?hotel_price='.str_replace(' ','_',$priceTag);
+                        }else{
+                            $url .= '&hotel_price='.str_replace(' ','_',$priceTag);
+                        }
+                        
+                    }
+
+                // CHECK ALL TAGS ARE INFORMED AT BACKEND FOR SHOWCASE 
+
+                    $all_tags = false;
+                    if($locationTag && $thematicTag && $pensionTag && $thematic2Tag && $priceTag)
+                    {
+                        $all_tags = true;
+                    }
+                //echo 'All=>'.$all_tags;
+                    if (!parse_url($url, PHP_URL_QUERY)){
+                        $url.='?hotelshowcase=hotelbubble';
+                    }else{
+                        $url.='&hotelshowcase=hotelbubble';
+                    }
+
+                    ?>
+                    
+
+                    <a onClick="gtmPromotionClick('<?php echo $val; ?>','<?php echo $promotion_name; ?>','<?php echo ltrim($url,'?'); ?>','<?php echo 'promobox-'.$j; ?>');"  <?php echo $new_tab; ?> href='<?php echo $url; ?>' >
+                    <div class="showcase_orange_bg_bubble"></div>
+                    <div class="showcase_hover_bubble" style=" display: none;"></div>
+                <?php } ?>
+                
+                
+                    <img class="image_label" id="showcase_images_bubble" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'showcase/'.$val; ?>" >
+                    
+                    <div id="showcase_tags_div_bubble">
+                        <div>
+                            <div class="loc_tag_bubble" style=" font-size: 19px;"><?php echo $locationTag ?></div>
+                            <div class="thm_tag_bubble" style="font-size: 18px;"><?php echo $thematicTag ?></div>
+                        </div>
+                        <div style="margin-top: 5px;">
+                            <div class="pnsn_tag_bubble" style="font-size: 15px;"><?php echo $pensionTag ?></div>
+                            <div class="thm2_tag_bubble" style="font-size: 15px;"><?php echo $thematic2Tag ?></div>
+                            <div class="prc_tag_bubble" style="font-size: 15px; <?php if($all_tags){ ?> display: none; <?php } ?>"><?php echo $new_price_tag ?></div>
+                        </div>
+                    </div>
+                
+                   
+                <?php if (isset($showcaseTagLabels_bubble['image_link' . $i]) && $showcaseTagLabels_bubble['image_link' . $i] != '') { ?>
+                    </a>
+                <?php } ?>
+            </div>
+
+            <?php
+           
+
+        }
+    }
+    $k = $k+1;
+}
+ } else { ?>
+
+<?php
+    
+    $brand = 'Zarpo Showcase';
+    $showcaseData = Mage::getModel('showcase/showcase')->load($brand, 'brand_name');
+    $showcaseImages = unserialize($showcaseData->getImageName());
+    $showcaseTagLabels = unserialize($showcaseData->getTagLabel());
+    $promotions='';
+    $new_hotel_range = array('below_200'=>'Até R$200 por quarto por dia','below_400'=>'Até R$400 por quarto por dia','below_600'=>'Até R$600 por quarto por dia','below_800'=>'Até R$800 por quarto por dia','below_1000'=>'Até R$1000 por quarto por dia','above_1000'=>'Acima de R$1000 por quarto por dia');
+
+    $i = 0;
+    $j = 0;
+    $mini_class = 1;
+    foreach ($showcaseImages as $key => $val) {
+        if ($key != 'image0') {
+            $i = $i + 1;
+        }
+        $new_tab = '';
+        if ($val) {
+            if ($key != 'image0') {
+                $j=$j+1;
+            }
+            
+
+            $class='';
+
+            if(($mini_class%2)==0)
+            {
+                $class='showcase-destaque-hotel-mini right';
+            }
+            else
+            {
+                $class='showcase-destaque-hotel-mini left';
+            }
+            $mini_class++;
+
+            ?>
+
+            <div class="flash-block <?php echo $class; ?>" >
+                <?php if (isset($showcaseTagLabels['image_link' . $i]) && $showcaseTagLabels['image_link' . $i] != '') { ?>
+                    <?php if (isset($imageNewTab['new_tab' . $i]) && $imageNewTab['new_tab' . $i] != '') {
+                        $new_tab = 'target="_blank"';
+                    }
+                    $image_link_url = rtrim($showcaseTagLabels['image_link' . $i], '&');
+                    //echo $image_link_url.'<br>';
+                    $select_values = explode('&', $image_link_url);
+                    $url = '';  $new_price_tag ='';
+                    $locationTag = ''; $thematicTag = ''; $pensionTag = ''; $thematic2Tag = ''; $priceTag = '';
+                    foreach($select_values as $key => $value)
+                    {
+                        $b = explode('=', $value);
+                        $tags_array[$b[0]] = $b[1];
+                    }
+
+                    if(array_key_exists('location_tag['.$i.']', $tags_array))
+                    {
+                        $locationTag = $tags_array['location_tag['.$i.']'];
+                    }
+                    if(array_key_exists('thematic_tag['.$i.']', $tags_array))
+                    {
+                        $thematicTag = $tags_array['thematic_tag['.$i.']'];
+                    }
+                    if(array_key_exists('pension_tag['.$i.']', $tags_array))
+                    {
+                        $pensionTag = $tags_array['pension_tag['.$i.']'];
+                    }
+                    if(array_key_exists('thematic2_tag['.$i.']', $tags_array))
+                    {
+                        $thematic2Tag = $tags_array['thematic2_tag['.$i.']'];
+                    }
+                    if(array_key_exists('price_tag['.$i.']', $tags_array))
+                    {
+                        $priceTag = $tags_array['price_tag['.$i.']'];
+                        if (array_key_exists($priceTag, $new_hotel_range)) {
+                            $new_price_tag = $new_hotel_range[$priceTag];
+                        }
+                    }
+
+                    if($locationTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?location_tag='.str_replace(' ','_',$locationTag);
+                        }else{
+                            $url .= '&location_tag='.str_replace(' ','_',$locationTag);
+                        }
+                        
+                    }
+                    if($thematicTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?thematic_tag='.str_replace(' ','_',$thematicTag);
+                        }else{
+                            $url .= '&thematic_tag='.str_replace(' ','_',$thematicTag);
+                        }
+                        
+                    }
+                    if($pensionTag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?pension_tag='.str_replace(' ','_',$pensionTag);
+                        }else{
+                            $url .= '&pension_tag='.str_replace(' ','_',$pensionTag);
+                        }
+
+                    }
+                    if($thematic2Tag)
+                    {
+                        if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?thematic_tag2='.str_replace(' ','_',$thematic2Tag);
+                        }else{
+                            $url .= '&thematic_tag2='.str_replace(' ','_',$thematic2Tag);
+                        }
+                        
+                    }
+                    if($priceTag)
+                    {
+                         if (!parse_url($url, PHP_URL_QUERY)){
+                            $url .= '?hotel_price='.str_replace(' ','_',$priceTag);
+                        }else{
+                            $url .= '&hotel_price='.str_replace(' ','_',$priceTag);
+                        }
+                        
+                    }
+
+
+                    if (!parse_url($url, PHP_URL_QUERY)){
+                        $url.='?hotelshowcase=pacoteflash';
+                    }else{
+                        $url.='&hotelshowcase=pacoteflash';
+                    }
+
+                    ?>
+                    
+
+                    <a onClick="gtmPromotionClick('<?php echo $val; ?>','<?php echo $promotion_name; ?>','<?php echo ltrim($url,'?'); ?>','<?php echo 'promobox-'.$j; ?>');"  <?php echo $new_tab; ?> href='<?php echo $url; ?>' >
+                    <div class="showcase_orange_bg"></div>
+                    <div class="showcase_hover" style="border: 5px solid #34d0ff !important; width: 454px; height: 164px; position: absolute; display: none;"></div>
+                <?php } ?>
+                
+                
+                    <img class="image_label" id="showcase_images" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'showcase/'.$val; ?>" >
+                    
+                    <div id="showcase_tags_div">
+                        <div>
+                            <div class="loc_tag" style=" font-size: 26px;"><?php echo $locationTag ?></div>
+                            <div class="thm_tag" style="font-size: 23px;"><?php echo $thematicTag ?></div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div class="pnsn_tag" style="font-size: 18px;"><?php echo $pensionTag ?></div>
+                            <div class="thm2_tag" style="font-size: 18px;"><?php echo $thematic2Tag ?></div>
+                            <div class="prc_tag" style="font-size: 18px;"><?php echo $new_price_tag ?></div>
+                        </div>
+                    </div>
+                
+                   
+                <?php if (isset($showcaseTagLabels['image_link' . $i]) && $showcaseTagLabels['image_link' . $i] != '') { ?>
+                    </a>
+                <?php } ?>
+            </div>
+
+            <?php
+           
+
+        }
+    }
+                        
+}
+?> 

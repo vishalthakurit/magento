@@ -1,0 +1,115 @@
+<?php
+$showcase = Mage::registry('showcase_data');
+$brandname = Mage::registry('showcase_data')->getBrandName();
+$Imagename = unserialize(Mage::registry('showcase_data')->getImageName());
+$ImageUrl = unserialize(Mage::registry('showcase_data')->getImageUrl());
+$imageNewTab = unserialize(Mage::registry('showcase_data')->getNewTab());
+$imagelabel= unserialize(Mage::registry('showcase_data')->getImageLabel());
+ 
+ ?>
+
+ <style type="text/css">
+    .form-list td.label,.form-list td.label label{
+        width: 130px;
+        padding-right: 0px !important;
+    }
+    div.main-col {
+         margin-left: 0px; 
+        min-height: 450px;
+         padding: 0px !important; 
+    }
+    div.side-col
+    {
+        display: none;
+    }
+    .columns
+    {
+        background: none;
+    }
+</style>
+<div id="showcase_tabs_form_section_content">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Showcase Images</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="showcase_form">
+            <div class="hor-scroll">
+                <div style="height:45px;">
+                            <div class="label" style="font-size:18px"><b ><?php echo $brandname; ?> </b></div>
+
+                        </div>
+                <table cellspacing="0" class="form-list" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Location Tag</th>
+                        <th>Thematic Tag</th>
+                        <th>Pension Tag</th>
+                        <th>Thematic2 Tag</th>
+                        <th>Price Tag</th>
+                    </tr>
+                </thead> 
+                    <tbody>
+                        
+                        <?php
+                        for ($i = 1; $i < 21; $i++) {
+                            ?>
+                            <tr>
+                                <td class="label"  style="width: 1%;"><label for="image " style="width: 70px; margin-left: 10px;"><b><?php echo 'Image' . $i; ?></b> </label></td>
+                                <td class="label" style="width: 17%;"> 
+                                    <div style="width: 100%;">
+                                    <?php 
+                                    $title='No file selected.';
+                                    if(isset($Imagename['image'. $i]) && $Imagename['image'. $i]!=''){ ?>
+                                    <image style="float: left; height: 22px; width: 25px;" src='<?php echo Mage::getBaseUrl('media').'showcase'.DS.$Imagename['image'. $i]; ?>' />
+                                    <?php  $title=$Imagename['image'. $i];
+                                    } ?>
+                                    <input title='<?php echo $title; ?>' id="<?php echo 'image' . $i; ?>" name="<?php echo 'image' . $i; ?>" value="" class="  input-text     " type="file" style="border:none;background: none;padding: 0px; float:right;">
+                                     </div>
+                                </td>
+
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="carlist" class="location_tags" style="width: 100%;">
+                                  <option value="<?php echo $ImageUrl['image_link'. $i];?>"><?php echo $ImageUrl['image_link'. $i];?></option>
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="carlist" class="thematic_tags" style="width: 100%;">
+                                  <option value="<?php echo $ImageUrl['image_link'. $i];?>"><?php echo $ImageUrl['image_link'. $i];?></option>
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="carlist" class="pension_tags" style="width: 100%;">
+                                  <option value="<?php echo $ImageUrl['image_link'. $i];?>"><?php echo $ImageUrl['image_link'. $i];?></option>
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="carlist" class="thematic2_tags" style="width: 100%;">
+                                  <option value="<?php echo $ImageUrl['image_link'. $i];?>"><?php echo $ImageUrl['image_link'. $i];?></option>
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="carlist" class="price_tags" style="width: 100%;">
+                                  <option value="<?php echo $ImageUrl['image_link'. $i];?>"><?php echo $ImageUrl['image_link'. $i];?></option>
+                                </select>
+                                </td>
+                            </tr>                  
+                        <?php
+                            }
+                        ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function del(id){
+            document.getElementById(id).parentNode.parentNode.remove();
+
+    }
+    </script>

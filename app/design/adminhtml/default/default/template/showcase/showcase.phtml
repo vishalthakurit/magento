@@ -1,0 +1,517 @@
+<?php
+$showcase = Mage::registry('showcase_data');
+$brandname = Mage::registry('showcase_data')->getBrandName();
+$Imagename = unserialize(Mage::registry('showcase_data')->getImageName());
+$taglabel= unserialize(Mage::registry('showcase_data')->getTagLabel());
+
+$redis = Mage::getSingleton('extranet/redis');
+
+$c_array = array();
+$events = array();
+$arrSortedEventIds = array();
+$arrNotSortedEventIds = array();
+$arrObjEvents_zarpo = array();
+$secret = array();
+$coll = Mage::getModel('secrete/secrete')->getCollection();
+foreach ($coll as $c) {
+    if (isset($secret[$c->getCproduct()])) {
+        $secret[$c->getCproduct()][] = $c->getCgroup();
+    } else {
+        $secret[$c->getCproduct()] = array($c->getCgroup());
+    }
+}
+if ($redis) {
+    $c_array = $redis->getValue('memcache_events_data');
+}
+
+
+if (!$c_array) {
+
+
+    $categories = Mage::getModel('catalog/category')->getCollection()
+            ->setStoreId(1)
+            ->addAttributeToSelect('is_active');
+    $allIds = $categories->getAllIds();
+
+    $eventCollection = Mage::getModel('enterprise_catalogevent/event')
+            ->getCollection();
+    $eventCollection->addFieldToFilter('category_id', array('in' => $allIds))
+            ->addVisibilityFilter()
+            ->addImageData()
+            ->addSortByStatus();
+
+
+    $categories->addIdFilter(
+            $eventCollection->getColumnValues('category_id')
+    );
+
+    foreach ($categories as $category) {
+        $event = $eventCollection->getItemByColumnValue('category_id', $category->getId());
+        if ($category->getIsActive()) {
+            $event->setCategory($category);
+        } else {
+            $eventCollection->removeItemByKey($event->getId());
+        }
+    }
+    $eventCollection->load();
+    $c_array = array();
+    foreach ($eventCollection as $event) {
+        $this->_events[] = $event;
+        $c_array[] = $event;
+    }
+}
+if ($c_array) {
+
+    foreach ($c_array as $row) {
+
+        $events[] = $row;
+    }
+}
+foreach ($events as $_event) {
+
+
+    $sortOrder = trim($_event->getSortOrder());
+    if (empty($sortOrder)) {
+        $arrNotSortedEventIds[] = $_event->getEventId();
+    } else {
+        $arrSortedEventIds[$sortOrder] = $_event->getEventId();
+    }
+    $arrObjEvents_zarpo[$_event->getEventId()] = $_event;
+}
+
+ksort($arrSortedEventIds);
+$arrSortedEventIds = array_values($arrSortedEventIds);
+$arrSorted_zarpo = array_merge($arrSortedEventIds, $arrNotSortedEventIds);
+
+$hotel_range=array('below_200'=>'Até R$200/quarto/dia','below_400'=>'Até R$400/quarto/dia','below_600'=>'Até R$600/quarto/dia','below_800'=>'Até R$800/quarto/dia','below_1000'=>'Até R$1000/quarto/dia','above_1000'=>'Acima de R$1000/quarto/dia');
+
+$tags = '';
+$locationTag = array();
+$zarpoThematicTag = array();
+
+if ($redis) {
+    $tags = $redis->getValue('tags');
+    $locationTag = $redis->getValue('zarpo_location_tag');
+    $zarpoThematicTag = $redis->getValue('zarpo_thematic_tag');
+    $zarpopensionTag = $redis->getValue('zarpo_pension_tag');
+    $zarpothematicTag2 = $redis->getValue('zarpo_thematic_tag2');
+}
+if (!$tags) {
+    $tags = Mage::getModel('tags/tags')->getCollection();
+    $tags->setOrder('sort', 'ASC');
+}
+
+
+ if (!$locationTag) {
+
+    $locationTag = array();
+    foreach ($tags->getData() as $tag) {
+        $ttile = $tag['title'];
+        if (strpos($ttile, '::') !== false) {
+            $tt = explode('::', $ttile);
+            $ttile = $tt[1];
+            continue;
+        }
+        if ($tag['sort'] == 0) {
+            continue;
+        }
+        if ($tag['tag_group'] == 'location_tag') {
+
+            foreach ($arrSorted_zarpo as $_event_id) {
+                if (!in_array($tag['title'], $locationTag)) {
+                    $_event = $arrObjEvents_zarpo[$_event_id];
+                    $_category = $_event->getCategory();
+                    $hotel_data = '';
+                    $hotel_data = $_category
+                            ->getProductCollection()
+                            ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+                            ->addAttributeToFilter('location_tag', array('like' => '%' . $tag['title'] . '%'))
+                            ->addAttributeToFilter('attribute_set_id', '26')
+                            ->addAttributeToSelect('*')
+                            ->getFirstItem()
+                            ->getData();
+
+                    if ($hotel_data) {
+                        $locationTag[] = $tag['title'];
+                    }
+                }
+            }
+            //$redis->setValue('zarpo_location_tag', $locationTag, false);
+        }
+    }
+}
+
+if (!$zarpoThematicTag) {
+    $zarpoThematicTag = array();
+    foreach ($tags->getData() as $tag) {
+
+        if ($tag['sort'] == 0) {
+            continue;
+        }
+        if ($tag['tag_group'] == 'thematic_tag') {
+
+            foreach ($arrSorted_zarpo as $_event_id) {
+
+                if (!in_array($tag['title'], $zarpoThematicTag)) {
+                    $_event = $arrObjEvents_zarpo[$_event_id];
+                    $_category = $_event->getCategory();
+                    $hotel_data = '';
+                    $hotel_data = $_category
+                            ->getProductCollection()
+                            ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+                            ->addAttributeToFilter('thematic_tag', array('like' => '%' . $tag['title'] . '%'))
+                            ->addAttributeToFilter('attribute_set_id', '26')
+                            ->addAttributeToSelect('*')
+                            ->getFirstItem()
+                            ->getData();
+
+                    if ($hotel_data) {
+                        //echo $tag['title'].'x';
+                        $zarpoThematicTag[] = $tag['title'];
+                    }
+                }
+            }
+           // $redis->setValue('zarpo_thematic_tag', $zarpoThematicTag, false);
+        }
+    }
+}
+
+if(!$zarpopensionTag)
+{   
+    $zarpopensionTag = array();
+    foreach($tags->getData() as $tag){  
+    if($tag['sort'] == 0){
+            continue;
+            }
+           
+        if($tag['tag_group'] == 'pension_tag'){
+              
+                foreach ($arrSorted_zarpo as $_event_id){
+                                              
+                        if(!in_array($tag['title'],$zarpopensionTag)){
+                        $_event=$arrObjEvents_zarpo[$_event_id];
+                        $_category = $_event->getCategory();
+                        $hotel_data = '';
+                                                           
+                        $hotel_data = $_category
+                        ->getProductCollection()
+                        ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+                        ->addAttributeToFilter('pension_tag', array('like'=>'%'.$tag['title'].'%'))
+                        ->addAttributeToFilter('attribute_set_id','26')
+                        ->addAttributeToSelect('*')
+                        ->getFirstItem()
+                        ->getData();
+                            
+                        if($hotel_data)
+                        {
+                                                                
+                            $zarpopensionTag[] = $tag['title'];
+                        }
+                    }
+                        
+                    }
+                    //$redis->setValue('zarpo_pension_tag', $zarpopensionTag, false);
+                
+        }
+    }
+}
+
+if(!$zarpothematicTag2)
+{
+$zarpothematicTag2 = array(); 
+foreach($tags->getData() as $tag){
+    
+if($tag['sort'] == 0 || $tag['sort'] >= 20000){
+        continue;
+        }
+    if($tag['tag_group'] == 'thematic_tag2'){
+        
+        foreach ($arrSorted_zarpo as $_event_id){
+        
+            if(!in_array($tag['title'],$zarpothematicTag2)){
+                $_event=$arrObjEvents_zarpo[$_event_id];
+                $_category = $_event->getCategory();
+                $hotel_data = '';
+                $hotel_data = $_category
+                ->getProductCollection()
+                ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
+                ->addAttributeToFilter('thematic_tag2', array('like'=>'%'.$tag['title'].'%'))
+                ->addAttributeToFilter('attribute_set_id','26')
+                ->addAttributeToSelect('*')
+                ->getFirstItem()
+                ->getData();
+                
+                if($hotel_data){
+                    $zarpothematicTag2[] = $tag['title'];
+                }
+            }
+        
+        }
+        //$redis->setValue('zarpo_thematic_tag2', $zarpothematicTag2, false);
+        }
+    }
+
+}
+
+?>
+
+
+ <style type="text/css">
+    .form-list td.label,.form-list td.label label{
+        width: 130px;
+        padding-right: 0px !important;
+    }
+    div.main-col {
+         margin-left: 0px; 
+        min-height: 450px;
+         padding: 0px !important; 
+    }
+    div.side-col
+    {
+        display: none;
+    }
+    .columns
+    {
+        background: none;
+    }
+</style>
+<div id="showcase_tabs_form_section_content">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Showcase Images</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="showcase_form">
+            <div class="hor-scroll">
+                <div style="height:45px;">
+                            <div class="label" style="font-size:18px"><b ><?php echo $brandname; ?> </b></div>
+
+                        </div>
+                <table cellspacing="0" class="form-list" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Location Tag</th>
+                        <th>Thematic Tag</th>
+                        <th>Pension Tag</th>
+                        <th>Thematic2 Tag</th>
+                        <th>Price Tag</th>
+                    </tr>
+                </thead> 
+                    <tbody>
+                        <?php
+                        for ($i = 1; $i < 21; $i++) {
+                            ?>
+                            <tr>
+                                <td class="label"  style="width: 1%;"><label for="image " style="width: 70px; margin-left: 10px;">
+                                <b><?php echo 'Image' . $i; ?></b> </label></td>
+                                <td class="label" style="width: 17%;"> 
+                                    <div style="width: 100%;">
+                                    <?php 
+                                    $title='No file selected.';
+                                    if(isset($Imagename['image'. $i]) && $Imagename['image'. $i]!=''){ ?>
+                                    <image style="float: left; height: 22px; width: 25px;" src='<?php echo Mage::getBaseUrl('media').'showcase'.DS.$Imagename['image'. $i]; ?>' />
+                                    <?php  $title=$Imagename['image'. $i];
+                                    } ?>
+                                    <input title='<?php echo $title; ?>' id="<?php echo 'image' . $i; ?>" name="<?php echo 'image' . $i; ?>" value="" class="input-text" type="file" style="border:none;background: none;padding: 0px; float:right;">
+                                     </div>
+                                </td>
+
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="<?php echo 'location_tag['. $i.']'; ?>" class="<?php echo 'location_tags' . $i; ?>" id="<?php echo 'image_label1' . $i; ?>" style="width: 100%;" size="1" onchange="changeEventHandler(this.id)">
+                                <option value="select">Select</option>
+                                <?php 
+                                    if ($locationTag)
+                                    {
+                                        
+                                        foreach ($locationTag as $lt){ ?>
+                                            <?php
+                                            
+
+                                                if ($redis->getValue(str_replace(' ', '_', $lt) . 'zarpo_location_tags')) {
+                                                    $subTags = $redis->getValue(str_replace(' ', '_', $lt) . 'zarpo_location_tags');
+                                                } else {
+                                                    $subTags = Mage::helper('tags')->getSubTag($lt, $arrSorted_zarpo, $arrObjEvents_zarpo, 26);
+                                                    //$redis->setValue(str_replace(' ', '_', $lt) . 'zarpo_location_tags', $subTags, false);
+                                                }
+                                                 ?>
+
+                                                <?php array_push($subTags, $lt); ?>
+                                                    <?php if (!empty($subTags)){ ?>
+
+                                                        
+                                                            <?php foreach ($subTags as $subTag){ ?>
+
+                                                                <?php $asa = $taglabel['image_link'.$i];
+                                                                        $tags = explode('&', $asa);
+                                                                        foreach($tags as $final_tag => $ft_val)
+                                                                        {
+                                                                            $a = explode('=', $ft_val);
+                                                                            $ac[$a[0]] = $a[1];
+                                                                        }
+                                                                ?>
+                                                                <option value = '<?php echo $subTag; ?>'
+                                                                    <?php if($subTag == $ac['location_tag['.$i.']']){ ?> selected="selected"<?php } ?>><?php echo $subTag; ?>
+                                                                </option>
+                                                            <?php } ?>
+                                                        
+                                                    <?php } ?>
+                                                
+
+                                            <?php 
+                                        } 
+                                    }
+                                ?>
+
+                               
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="<?php echo 'thematic_tag['. $i.']'; ?>" class="<?php echo 'thematic_tags' . $i; ?>" id="<?php echo 'image_label2' . $i; ?>" style="width: 100%;" onchange="changeEventHandler(this.id)">
+                                <option value="select">Select</option>
+                                <?php 
+                                    if ($zarpoThematicTag)
+                                    {
+                                        
+                                        foreach ($zarpoThematicTag as $tt){ ?>
+                                            
+                                            <?php $asa = $taglabel['image_link'.$i];
+                                                    $tags = explode('&', $asa);
+                                                    foreach($tags as $final_tag => $ft_val)
+                                                    {
+                                                        $a = explode('=', $ft_val);
+                                                        $ac[$a[0]] = $a[1];
+                                                    }
+                                            ?>
+                                            <option value = '<?php echo $tt; ?>'
+                                                <?php if($tt == $ac['thematic_tag['.$i.']']){ ?> selected="selected"<?php } ?>><?php echo $tt; ?>
+                                            </option>
+                                        <?php } ?>
+                                    
+                                <?php } ?>
+
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="<?php echo 'pension_tag['. $i.']'; ?>" class="<?php echo 'pension_tags' . $i; ?>" id="<?php echo 'image_label3' . $i; ?>" style="width: 100%;" onchange="changeEventHandler(this.id)">
+                                <option value="select">Select</option>
+                                <?php 
+                                    if ($zarpopensionTag)
+                                    {
+                                        
+                                        foreach ($zarpopensionTag as $pt){ ?>
+
+                                            <?php $asa = $taglabel['image_link'.$i];
+                                                    $tags = explode('&', $asa);
+                                                    foreach($tags as $final_tag => $ft_val)
+                                                    {
+                                                        $a = explode('=', $ft_val);
+                                                        $ac[$a[0]] = $a[1];
+                                                    }
+                                            ?>
+                                            
+                                            <option value = '<?php echo $pt; ?>'
+                                                <?php if($pt == $ac['pension_tag['.$i.']']){ ?> selected="selected"<?php } ?>><?php echo $pt; ?>
+                                            </option>
+                                        <?php } ?>
+                                    
+                                <?php } ?>
+
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="<?php echo 'thematic2_tag['. $i.']'; ?>" class="<?php echo 'thematic2_tags' . $i; ?>" id="<?php echo 'image_label4' . $i; ?>" style="width: 100%;" onchange="changeEventHandler(this.id)">
+                                <option value="select">Select</option>
+                                <?php 
+                                    if ($zarpothematicTag2)
+                                    {
+                                        
+                                        foreach ($zarpothematicTag2 as $ttt){ ?>
+
+                                            <?php $asa = $taglabel['image_link'.$i];
+                                                    $tags = explode('&', $asa);
+                                                    foreach($tags as $final_tag => $ft_val)
+                                                    {
+                                                        $a = explode('=', $ft_val);
+                                                        $ac[$a[0]] = $a[1];
+                                                    }
+                                            ?>
+                                            
+                                            <option value = '<?php echo $ttt; ?>'
+                                                <?php if($ttt == $ac['thematic2_tag['.$i.']']){ ?> selected="selected"<?php } ?>><?php echo $ttt; ?>
+                                            </option>
+                                        <?php } ?>
+                                    
+                                <?php } ?>
+                                </select>
+                                </td>
+                                <td style="width: 11%; padding-right: 5px;">
+                                <select name="<?php echo 'price_tag['. $i.']'; ?>" class="<?php echo 'price_tags' . $i; ?>" id="<?php echo 'image_label5' . $i; ?>" style="width: 100%;" onchange="changeEventHandler(this.id)">
+                                <option value="select">Select</option>
+                                <?php 
+                                    if ($zarpothematicTag2)
+                                    {
+                                        
+                                        foreach($hotel_range as $key=>$val){ ?>
+
+                                            <?php $asa = $taglabel['image_link'.$i];
+                                                    $tags = explode('&', $asa);
+                                                    foreach($tags as $final_tag => $ft_val)
+                                                    {
+                                                        $a = explode('=', $ft_val);
+                                                        $ac[$a[0]] = $a[1];
+                                                    }
+                                            ?>
+                                            
+                                            <option value = '<?php echo $key; ?>'
+                                                <?php if($key == $ac['price_tag['.$i.']']){ ?> selected="selected"<?php } ?>><?php echo $val; ?>
+                                            </option>
+                                        <?php } ?>
+                                    
+                                <?php } ?>
+                                </select>
+                                </td>
+                                <input id="<?php echo 'image_link' . $i; ?>" name="<?php echo 'image_link' . $i; ?>" value="" class="input-text full_url" type="hidden">
+                                
+                            </tr>                  
+                        <?php
+                            }
+                        ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+      function changeEventHandler(id) {
+        var $tag_name = jQuery('#'+id).attr('name');
+        var $tag_value = event.target.value;
+
+        var $row = jQuery('#'+id).closest('tr');
+        var $columns = $row.find('input.full_url');
+        var $text = $columns.val();
+
+        var $col = $row.find('select'); 
+        var $text2 = '';
+            for(i=0; i < $col.length; i++){
+                
+                jQuery($col[i]).find('option:selected').each(function() {
+                    if($text2 != 'undefined' || $text2 != ''){
+                        if(jQuery(this).val() != 'select')
+                        {
+                         $text2 = $text2 + jQuery($col[i]).attr('name') + '=' + jQuery(this).val() + '&';     
+                        }
+                    }                   
+                });                
+            }
+
+            $columns.val($text2);
+      }
+
+    </script>
+

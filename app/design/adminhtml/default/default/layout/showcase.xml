@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <showcase_adminhtml_showcase_index>
+        <reference name="content">
+            <block type="showcase/adminhtml_showcase" name="showcase" />
+        </reference>
+    </showcase_adminhtml_showcase_index>
+    <showcase_adminhtml_showcase_edit>
+        <reference name="head">
+            <action method="addJs"><script>lib/jquery/jquery-3.2.1.min.js</script></action>
+            <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
+        </reference>
+    </showcase_adminhtml_showcase_edit>
+</layout>
