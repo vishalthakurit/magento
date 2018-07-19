@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+--> 
+<layout>
+    <adminhtml_whatsapp_whatsapp_index>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>vishal_whatsapp/whatsapp</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vishal_whatsapp/adminhtml_whatsapp" name="whatsapp" />
+
+        </reference>
+    </adminhtml_whatsapp_whatsapp_index>
+    <adminhtml_whatsapp_whatsapp_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_grid" name="whatsapp_grid"/>
+        </block>
+    </adminhtml_whatsapp_whatsapp_grid>
+    <!-- Whatsapp add/edit action -->
+    <adminhtml_whatsapp_whatsapp_edit>
+        <update handle="editor"/>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>vishal_whatsapp/whatsapp</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_edit" name="whatsapp_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_edit_tabs" name="whatsapp_tabs"></block>
+        </reference>
+    </adminhtml_whatsapp_whatsapp_edit>
+
+    <adminhtml_whatsapp_whatsapp_comment_index>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>vishal_whatsapp/whatsapp_comment</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_comment" name="whatsapp_comment_grid"/>
+        </reference>
+    </adminhtml_whatsapp_whatsapp_comment_index>
+    <adminhtml_whatsapp_whatsapp_comment_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_comment_grid" name="whatsapp_comment_grid"/>
+        </block>
+    </adminhtml_whatsapp_whatsapp_comment_grid>
+    <adminhtml_whatsapp_whatsapp_comment_edit>
+        <update handle="editor"/>
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>vishal_whatsapp/whatsapp_comment</menupath>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_comment_edit" name="whatsapp_comment_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="vishal_whatsapp/adminhtml_whatsapp_comment_edit_tabs" name="whatsapp_comment_tabs"></block>
+        </reference>
+    </adminhtml_whatsapp_whatsapp_comment_edit>
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addJs"><script>lib/jquery/jquery-1.10.2.min.js</script></action>
+            <action method="addJs"><file>jscolor/jscolor.js</file></action>
+            <action method="addJs"><file>whatsapp/jquery.businessHours.js</file></action>
+            <!-- <action method="addJs"><file>whatsapp/bootstrap.min.js</file></action> -->
+            <action method="addJs"><file>whatsapp/jstimepicker/jquery.timepicker.js</file></action>
+            <action method="addItem"><type>js_css</type><name>whatsapp/jstimepicker/jquery.timepicker.css</name></action>
+            <action method="addItem"><type>js_css</type><name>whatsapp/jquery.businessHours.css</name></action>
+            <action method="addItem"><type>js_css</type><name>whatsapp/whatsapp-admin.css</name></action>
+            <!-- <action method="addItem"><type>js_css</type><name>whatsapp/bootstrap.min.css</name></action> -->
+            <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
+        </reference>
+    </adminhtml_system_config_edit>
+</layout>

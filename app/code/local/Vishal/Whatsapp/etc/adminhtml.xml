@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <vishal_whatsapp translate="title" module="vishal_whatsapp">
+                                        <title>Whatsapp</title>
+                                    </vishal_whatsapp>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <vishal_whatsapp translate="title" module="vishal_whatsapp">
+                        <title>Whatsapp</title>
+                        <children>
+                            <whatsapp translate="title" module="vishal_whatsapp">
+                                <title>Whatsapp</title>
+                                <sort_order>0</sort_order>
+                            </whatsapp>
+                            <whatsapp_comments translate="title" module="vishal_whatsapp">
+                                <title>Manage Whatsapp Comments</title>
+                                <sort_order>5</sort_order>
+                            </whatsapp_comments>
+                        </children>
+                    </vishal_whatsapp>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <vishal_whatsapp translate="title" module="vishal_whatsapp">
+            <title>Whatsapp</title>
+            <sort_order>85</sort_order>
+            <children>
+                <whatsapp translate="title" module="vishal_whatsapp">
+                    <title>Whatsapp</title>
+                    <action>adminhtml/whatsapp_whatsapp</action>
+                    <sort_order>0</sort_order>
+                </whatsapp>
+                <whatsapp_comments translate="title" module="vishal_whatsapp">
+                    <title>Manage Whatsapp Comments</title>
+                    <action>adminhtml/whatsapp_whatsapp_comment</action>
+                    <sort_order>4</sort_order>
+                </whatsapp_comments>
+            </children>
+        </vishal_whatsapp>
+    </menu>
+</config>

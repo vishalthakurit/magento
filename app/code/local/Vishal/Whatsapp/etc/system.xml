@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+--> 
+<config>
+    <tabs>
+        <vishal translate="label" module="vishal_whatsapp">
+            <label>Whatsapp Chat Config</label>
+            <sort_order>100</sort_order>
+        </vishal>
+    </tabs>
+    <sections>
+        <vishal_whatsapp translate="label" module="vishal_whatsapp">
+            <class>separator-top</class>
+            <label>Whatsapp Chat</label>
+            <tab>vishal</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <whatsapp_general_config translate="label" module="vishal_whatsapp">
+                    <label>Whatsapp General configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable>
+                        <mobile_number translate="label comment">
+                            <label>Mobile phone</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Introduce mobile phone number with the international country code.</comment>
+                        </mobile_number>
+                        <group_id translate="label comment">
+                            <label>Group id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Identification of the WhatsApp chat group. If defined, will open the group and will offer to the customer to join it. You can obtain this Id going to the Info group - add participant - Invite to group via link. You can find identification needed in https://chat.whatsapp.com/xxxxxx where xxxxxx it is the Id.</comment>
+                        </group_id>
+                        <button_text translate="label">
+                            <label>Button text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </button_text>
+                        <default_msg translate="label comment">
+                            <label>Predefined message</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Predefined message to send when WhatsApp app opens.</comment>
+                        </default_msg>
+                        <share_msg translate="label comment">
+                            <label>Share</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>With this option enabled, message text from WhatsApp chat opened will be filled with current URL address. With mobile phone number filled above, URL address will be shared to this number. Without mobile phone, will be shared with customer WhatsApp contact list.</comment>
+                        </share_msg>
+                    </fields>
+                </whatsapp_general_config>
+                <whatsapp_dispaly_config translate="label" module="vishal_whatsapp">
+                    <label>Whatsapp Display configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <type translate="label">
+                            <label>Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>vishal_whatsapp/system_config_source_buttontype</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </type>
+                        <position translate="label">
+                            <label>Position</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>vishal_whatsapp/system_config_source_buttonposition</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select where do you want to show the WhatsApp chat contact button.</comment>
+                        </position>
+                        <show_on_pc_or_desktop translate="label">
+                            <label>Show on PC/Desktop</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_on_pc_or_desktop>
+                        <show_on_mobile translate="label">
+                            <label>Show on Mobile</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_on_mobile>
+                        <button_color translate="label comment">
+                            <label>Button Color</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>color</validate>              <!-- This is important for color picker -->
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Color of the button.</comment>
+                        </button_color>
+                        <offline_message translate="label comment">
+                            <label>Offline message</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Offline message to show out of time. Leave blank to not show the button out of time.</comment>
+                        </offline_message>
+                        <schedule translate="label comment">
+                            <label>Schedule</label>
+                            <frontend_model>vishal_whatsapp_block_schedule</frontend_model> 
+                            <backend_model>vishal_whatsapp/system_config_backend_whatsappschedule</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </schedule>
+                        <!-- <check translate="label">
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>vishal_whatsapp/adminhtml_system_config_form_button</frontend_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check> -->
+                    </fields>
+                </whatsapp_dispaly_config>
+                <filters translate="label" module="vishal_whatsapp">
+                    <label>Filters</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <show_on_pages translate="label">
+                            <label>Show on all pages</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_on_pages>
+                        <specific_pages translate="label comment">
+                            <label>Specific Pages</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>vishal_whatsapp/system_config_source_pages</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show in these pages.</comment>
+                            <depends>
+                                <show_on_pages>0</show_on_pages>
+                            </depends>
+                        </specific_pages>
+                        <customer_groups translate="label comment">
+                            <label>Customer groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>vishal_whatsapp/system_config_source_customergrps</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show for these customer groups.</comment>
+                        </customer_groups>
+                    </fields>
+                </filters>
+            </groups>
+        </vishal_whatsapp>
+    </sections>
+</config>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <api2>
+        <resource_groups>
+            <vishal_whatsapp translate="title" module="vishal_whatsapp">
+                <title>Whatsapp</title>
+                <sort_order>120</sort_order>
+                <children>
+                    <vishal_whatsapp_whatsapp translate="title" module="vishal_whatsapp">
+                        <title>whatsapp</title>
+                        <sort_order>0</sort_order>
+                    </vishal_whatsapp_whatsapp>
+
+                </children>
+            </vishal_whatsapp>
+        </resource_groups>
+        <resources>
+            <vishal_whatsapp_whatsapp translate="title" module="vishal_whatsapp">
+                <group>vishal_whatsapp_whatsapp</group>
+                <model>vishal_whatsapp/api2_whatsapp</model>
+                <working_model>vishal_whatsapp/whatsapp</working_model>
+                <title>whatsapp</title>
+                <sort_order>0</sort_order>
+                <privileges>
+                    <admin>
+                        <create>1</create>
+                        <retrieve>1</retrieve>
+                        <update>1</update>
+                        <delete>1</delete>
+                    </admin>
+                    <customer>
+                        <retrieve>1</retrieve>
+                    </customer>
+                    <guest>
+                        <retrieve>1</retrieve>
+                    </guest>
+                </privileges>
+                <attributes translate="entity_id mobile_phone status url_key in_rss meta_title meta_keywords meta_description allow_comment" module="vishal_whatsapp">
+                    <entity_id>Id</entity_id>
+                    <mobile_phone>Mobile phone</mobile_phone>
+                    <status>Enabled</status>
+                    <url_key>URL key</url_key>
+                    <in_rss>In RSS</in_rss>
+                    <meta_title>Meta title</meta_title>
+                    <meta_keywords>Meta keywords</meta_keywords>
+                    <meta_description>Meta description</meta_description>
+                    <allow_comment>Allow Comment</allow_comment>
+                </attributes>
+                <routes>
+                    <route_entity>
+                        <route>/whatsapp_whatsapps/:id</route>
+                        <action_type>entity</action_type>
+                    </route_entity>
+                    <route_entity_with_store>
+                        <route>/whatsapp_whatsapps/:id/store/:store</route>
+                        <action_type>entity</action_type>
+                    </route_entity_with_store>
+                    <route_collection>
+                        <route>/whatsapp_whatsapps</route>
+                        <action_type>collection</action_type>
+                    </route_collection>
+                    <route_collection_with_store>
+                        <route>/whatsapp_whatsapps/store/:store</route>
+                        <action_type>collection</action_type>
+                    </route_collection_with_store>
+                </routes>
+                <versions>1</versions>
+            </vishal_whatsapp_whatsapp>
+
+        </resources>
+    </api2>
+</config>

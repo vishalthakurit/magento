@@ -1,0 +1,36 @@
+<?php
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+/**
+ * Whatsapp view template
+ *
+ * @category    Vishal
+ * @package     Vishal_Whatsapp
+ * @author      Ultimate Module Creator
+ */
+?>
+<?php $_whatsapp = $this->getCurrentWhatsapp();?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="page-title whatsapp-title">
+    <h1><?php echo $_whatsapp->getMobilePhone(); ?></h1>
+</div>
+<div class="whatsapp-view">
+    <div class="whatsapp-mobile_phone">
+        <?php echo Mage::helper('vishal_whatsapp')->__('Mobile phone');?>:<?php echo $_whatsapp->getMobilePhone();?>
+
+    </div>
+
+</div>
