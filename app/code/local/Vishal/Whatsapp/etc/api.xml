@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <api>
+        <resources>
+            <whatsapp_whatsapp translate="title" module="vishal_whatsapp">
+                <title>Whatsapp API</title>
+                <model>vishal_whatsapp/whatsapp_api</model>
+                <acl>whatsapp/whatsapp</acl>
+                <methods>
+                    <list translate="title" module="vishal_whatsapp">
+                        <title>Retrieve list of whatsapps</title>
+                        <method>items</method>
+                        <acl>whatsapp/whatsapp/list</acl>
+                    </list>
+                    <info translate="title" module="vishal_whatsapp">
+                        <title>Retrieve whatsapp info</title>
+                        <acl>whatsapp/whatsapp/info</acl>
+                    </info>
+                    <add translate="title" module="vishal_whatsapp">
+                        <title>Add whatsapp</title>
+                        <acl>whatsapp/whatsapp/add</acl>
+                    </add>
+                    <update translate="title" module="vishal_whatsapp">
+                        <title>Update whatsapp</title>
+                        <acl>whatsapp/whatsapp/update</acl>
+                    </update>
+                    <remove translate="title" module="vishal_whatsapp">
+                        <title>Remove whatsapp</title>
+                        <acl>whatsapp/whatsapp/remove</acl>
+                    </remove>
+                </methods>
+                <faults module="vishal_whatsapp">
+                    <whatsapp_not_exists>
+                        <code>101</code>
+                        <message>Requested whatsapp does not exist.</message>
+                    </whatsapp_not_exists>
+                    <invalid_data>
+                        <code>102</code>
+                        <message>Provided data is invalid.</message>
+                    </invalid_data>
+                    <save_error>
+                        <code>103</code>
+                        <message>Error while saving whatsapp. Details in error message.</message>
+                    </save_error>
+                    <remove_error>
+                        <code>104</code>
+                        <message>Error while removing whatsapp. Details in error message.</message>
+                    </remove_error>
+                </faults>
+            </whatsapp_whatsapp>
+            <whatsapp_whatsapp_comment translate="title" module="vishal_whatsapp">
+                <title>whatsapp Comments</title>
+                <model>vishal_whatsapp/whatsapp_comment_api</model>
+                <acl>whatsapp/whatsapp/comment</acl>
+                <methods>
+                    <list translate="title" module="vishal_whatsapp">
+                        <title>Retrieve whatsapp Comments</title>
+                        <method>items</method>
+                        <acl>whatsapp/whatsapp_comment/list</acl>
+                    </list>
+                    <updateStatus translate="title" module="vishal_whatsapp">
+                        <title>Update whatsapp Status</title>
+                        <method>updateStatus</method>
+                        <acl>whatsapp/whatsapp_comment/updateStatus</acl>
+                    </updateStatus>
+                </methods>
+                <faults module="vishal_whatsapp">
+                    <not_exists>
+                        <code>101</code>
+                        <message>Requested comment not found.</message>
+                    </not_exists>
+                </faults>
+            </whatsapp_whatsapp_comment>
+
+        </resources>
+        <resources_alias>
+            <whatsapp>whatsapp_whatsapp</whatsapp>
+            <whatsapp_comment>whatsapp_whatsapp_comment</whatsapp_comment>
+        </resources_alias>
+        <v2>
+            <resources_function_prefix>
+                <whatsapp>whatsappWhatsapp</whatsapp>
+                <whatsapp_comment>whatsappWhatsappComment</whatsapp_comment>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <vishal_whatsapp translate="title" module="vishal_whatsapp">
+                    <title>Whatsapp</title>
+                    <whatsapp translate="title" module="vishal_whatsapp">
+                        <title>Whatsapp</title>
+                        <sort_order>0</sort_order>
+                        <list translate="title" module="vishal_whatsapp">
+                            <title>List</title>
+                        </list>
+                        <info translate="title" module="vishal_whatsapp">
+                            <title>Info</title>
+                        </info>
+                        <add translate="title" module="vishal_whatsapp">
+                            <title>Add</title>
+                        </add>
+                        <update translate="title" module="vishal_whatsapp">
+                            <title>Update</title>
+                        </update>
+                        <remove translate="title" module="vishal_whatsapp">
+                            <title>Remove</title>
+                        </remove>
+                    </whatsapp>
+                    <whatsapp_comment translate="title" module="vishal_whatsapp">
+                        <title>whatsapp Comments</title>
+                        <sort_order>3</sort_order>
+                        <list translate="title" module="vishal_whatsapp">
+                            <title>List</title>
+                        </list>
+                        <updateStatus translate="title" module="vishal_whatsapp">
+                            <title>Update Status</title>
+                        </updateStatus>
+                    </whatsapp_comment>
+
+                </vishal_whatsapp>
+            </resources>
+        </acl>
+    </api>
+</config>

@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <modules>
+        <Vishal_Whatsapp>
+            <version>1.0.0</version>
+        </Vishal_Whatsapp>
+    </modules>
+    <global>
+        <resources>
+            <vishal_whatsapp_setup>
+                <setup>
+                    <module>Vishal_Whatsapp</module>
+                    <class>Vishal_Whatsapp_Model_Resource_Setup</class>
+                </setup>
+            </vishal_whatsapp_setup>
+        </resources>
+        <blocks>
+            <vishal_whatsapp>
+                <class>Vishal_Whatsapp_Block</class>
+            </vishal_whatsapp>
+        </blocks>
+        <helpers>
+            <vishal_whatsapp>
+                <class>Vishal_Whatsapp_Helper</class>
+            </vishal_whatsapp>
+        </helpers>
+        <models>
+            <vishal_whatsapp>
+                <class>Vishal_Whatsapp_Model</class>
+                <resourceModel>vishal_whatsapp_resource</resourceModel>
+            </vishal_whatsapp>
+            <vishal_whatsapp_resource>
+                <class>Vishal_Whatsapp_Model_Resource</class>
+                <entities>
+                    <whatsapp>
+                        <table>vishal_whatsapp_whatsapp</table>
+                    </whatsapp>
+                    <whatsapp_store>
+                        <table>vishal_whatsapp_whatsapp_store</table>
+                    </whatsapp_store>
+                    <whatsapp_comment>
+                        <table>vishal_whatsapp_whatsapp_comment</table>
+                    </whatsapp_comment>
+                    <whatsapp_comment_store>
+                        <table>vishal_whatsapp_whatsapp_comment_store</table>
+                    </whatsapp_comment_store>
+                </entities>
+            </vishal_whatsapp_resource>
+        </models>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <vishal_whatsapp>
+                        <class>Vishal_Whatsapp_Controller_Router</class>
+                        <method>initControllerRouters</method>
+                    </vishal_whatsapp>
+                </observers>
+            </controller_front_init_routers>
+            <!-- <admin_system_config_changed_section_vishal_whatsapp>
+                <observers>
+                    <whatsapp_schedule>
+                        <class>cataloginventory/observer</class>
+                        <method>updateItemsStockUponConfigChange</method>
+                    </whatsapp_schedule>
+                </observers>
+            </admin_system_config_changed_section_vishal_whatsapp> -->
+        </events>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <vishal_whatsapp>
+                    <file>vishal_whatsapp.xml</file>
+                </vishal_whatsapp>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Vishal_Whatsapp>
+                    <files>
+                        <default>Vishal_Whatsapp.csv</default>
+                    </files>
+                </Vishal_Whatsapp>
+            </modules>
+        </translate>
+        <global_search>
+            <whatsapp>
+                <class>vishal_whatsapp/adminhtml_search_whatsapp</class>
+                <acl>vishal_whatsapp</acl>
+            </whatsapp>
+        </global_search>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Vishal_Whatsapp before="Mage_Adminhtml">Vishal_Whatsapp_Adminhtml</Vishal_Whatsapp>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <frontend>
+        <routers>
+            <vishal_whatsapp>
+                <use>standard</use>
+                <args>
+                    <module>Vishal_Whatsapp</module>
+                    <frontName>whatsapp</frontName>
+                </args>
+            </vishal_whatsapp>
+        </routers>
+        <layout>
+            <updates>
+                <vishal_whatsapp>
+                    <file>vishal_whatsapp.xml</file>
+                </vishal_whatsapp>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Vishal_Whatsapp>
+                    <files>
+                        <default>Vishal_Whatsapp.csv</default>
+                    </files>
+                </Vishal_Whatsapp>
+            </modules>
+        </translate>
+    </frontend>
+    <default>
+        <vishal_whatsapp>
+            <whatsapp>
+                <breadcrumbs>1</breadcrumbs>
+                <allow_comment>1</allow_comment>
+                <rss>1</rss>
+                <meta_title>whatsapps</meta_title>
+            </whatsapp>
+        </vishal_whatsapp>
+    </default>
+</config>

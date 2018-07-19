@@ -1,0 +1,47 @@
+<?php 
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+/**
+ * Whatsapp list template
+ *
+ * @category    Vishal
+ * @package     Vishal_Whatsapp
+ * @author      Ultimate Module Creator
+ */
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_whatsapps = $this->getWhatsapps(); ?>
+<div class="page-title whatsapp-title">
+    <?php if (Mage::helper('vishal_whatsapp/whatsapp')->isRssEnabled()) : ?>
+        <a href="<?php echo Mage::helper('vishal_whatsapp/whatsapp')->getRssUrl();?>" class="link-rss"><?php echo Mage::helper('vishal_whatsapp')->__('Subscribe to RSS Feed')?></a>
+    <?php endif;?>
+    <h1><?php echo Mage::helper('vishal_whatsapp')->__('Whatsapps') ?></h1>
+</div>
+<?php if ($_whatsapps->getSize() > 0) :?>
+    <?php echo $this->getPagerHtml(); ?>
+    <div class="whatsapp-list-container">
+    <?php foreach ($_whatsapps as $_whatsapp) : ?>
+        <div class="whatsapp-list-item">
+            <a href="<?php echo $_whatsapp->getWhatsappUrl()?>">
+                <?php echo $_whatsapp->getMobilePhone();?>
+            </a><br />
+        </div>
+    <?php endforeach;?>
+    </div>
+    <?php echo $this->getPagerHtml(); ?>
+<?php else : ?>
+    <?php echo Mage::helper('vishal_whatsapp')->__('There are no whatsapps at this moment');?>
+<?php endif;?>

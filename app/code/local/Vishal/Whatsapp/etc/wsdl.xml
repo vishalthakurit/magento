@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="whatsappWhatsappListEntity">
+                <all>
+                    <element name="entity_id" type="xsd:string" minOccurs="1" />
+                    <element name="mobile_phone" type="xsd:string" minOccurs="1" />
+                    <element name="status" type="xsd:string" minOccurs="0" />
+                    <element name="url_key" type="xsd:string" minOccurs="0" />
+                    <element name="in_rss" type="xsd:string" minOccurs="0" />
+                    <element name="meta_title" type="xsd:string" minOccurs="0" />
+                    <element name="meta_keywords" type="xsd:string" minOccurs="0" />
+                    <element name="meta_description" type="xsd:string" minOccurs="0" />
+                    <element name="allow_comment" type="xsd:string" minOccurs="0" />
+
+                    <element name="created_at" type="xsd:string" minOccurs="1" />
+                    <element name="updated_at" type="xsd:string" minOccurs="1" />
+                </all>
+            </complexType>
+            <complexType name="whatsappWhatsappListEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:whatsappWhatsappListEntity[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+            <complexType name="whatsappWhatsappAddEntity">
+                <all>
+                    <element name="mobile_phone" type="xsd:string" minOccurs="1" />
+                    <element name="status" type="xsd:string" minOccurs="0" />
+                    <element name="url_key" type="xsd:string" minOccurs="0" />
+                    <element name="in_rss" type="xsd:string" minOccurs="0" />
+                    <element name="meta_title" type="xsd:string" minOccurs="0" />
+                    <element name="meta_keywords" type="xsd:string" minOccurs="0" />
+                    <element name="meta_description" type="xsd:string" minOccurs="0" />
+                    <element name="allow_comment" type="xsd:string" minOccurs="0" />
+
+                </all>
+            </complexType>
+            <complexType name="whatsappWhatsappUpdateEntity">
+                <all>
+                    <element name="mobile_phone" type="xsd:string" minOccurs="1" />
+                    <element name="status" type="xsd:string" minOccurs="0" />
+                    <element name="url_key" type="xsd:string" minOccurs="0" />
+                    <element name="in_rss" type="xsd:string" minOccurs="0" />
+                    <element name="meta_title" type="xsd:string" minOccurs="0" />
+                    <element name="meta_keywords" type="xsd:string" minOccurs="0" />
+                    <element name="meta_description" type="xsd:string" minOccurs="0" />
+                    <element name="allow_comment" type="xsd:string" minOccurs="0" />
+
+                </all>
+            </complexType>
+            <complexType name="whatsappWhatsappInfoEntity">
+                <all>
+                    <element name="entity_id" type="xsd:string" minOccurs="1" />
+                    <element name="mobile_phone" type="xsd:string" minOccurs="1" />
+                    <element name="status" type="xsd:string" minOccurs="0" />
+                    <element name="url_key" type="xsd:string" minOccurs="0" />
+                    <element name="in_rss" type="xsd:string" minOccurs="0" />
+                    <element name="meta_title" type="xsd:string" minOccurs="0" />
+                    <element name="meta_keywords" type="xsd:string" minOccurs="0" />
+                    <element name="meta_description" type="xsd:string" minOccurs="0" />
+                    <element name="allow_comment" type="xsd:string" minOccurs="0" />
+
+                    <element name="created_at" type="xsd:string" minOccurs="1" />
+                    <element name="updated_at" type="xsd:string" minOccurs="1" />
+                </all>
+            </complexType>
+                    <complexType name="whatsappWhatsappCommentListEntity">
+                <all>
+                    <element name="comment_id" type="xsd:string" minOccurs="1" />
+                    <element name="whatsapp_id" type="xsd:string" minOccurs="1" />
+                    <element name="title" type="xsd:string" minOccurs="1" />
+                    <element name="comment" type="xsd:string" minOccurs="1" />
+                    <element name="status" type="xsd:string" minOccurs="1" />
+                    <element name="customer_id" type="xsd:string" minOccurs="1" />
+                    <element name="name" type="xsd:string" minOccurs="1" />
+                    <element name="email" type="xsd:string" minOccurs="1" />
+                    <element name="created_at" type="xsd:string" minOccurs="1" />
+                    <element name="updated_at" type="xsd:string" minOccurs="1" />
+                </all>
+            </complexType>
+            <complexType name="whatsappWhatsappCommentListEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:whatsappWhatsappCommentListEntity[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+        </schema>
+    </types>
+    <message name="whatsappWhatsappListRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="filters" type="typens:filters"/>
+    </message>
+    <message name="whatsappWhatsappListResponse">
+        <part name="result" type="typens:whatsappWhatsappListEntityArray" />
+    </message>
+    <message name="whatsappWhatsappInfoRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="whatsappId" type="xsd:string" />
+    </message>
+    <message name="whatsappWhatsappInfoResponse">
+        <part name="result" type="typens:whatsappWhatsappInfoEntity" />
+    </message>
+    <message name="whatsappWhatsappAddRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="data" type="typens:whatsappWhatsappAddEntity" />
+    </message>
+    <message name="whatsappWhatsappAddResponse">
+        <part name="result" type="xsd:int"/>
+    </message>
+    <message name="whatsappWhatsappUpdateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="whatsappId" type="xsd:string" />
+        <part name="data" type="typens:whatsappWhatsappUpdateEntity" />
+    </message>
+    <message name="whatsappWhatsappUpdateResponse">
+        <part name="result" type="xsd:boolean" />
+    </message>
+    <message name="whatsappWhatsappRemoveRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="whatsappId" type="xsd:string" />
+    </message>
+    <message name="whatsappWhatsappRemoveResponse">
+        <part name="result" type="xsd:boolean" />
+    </message>
+        <message name="whatsappWhatsappCommentListRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="filters" type="typens:filters"/>
+    </message>
+    <message name="whatsappWhatsappCommentListResponse">
+        <part name="result" type="typens:whatsappWhatsappCommentListEntityArray" />
+    </message>
+    <message name="whatsappWhatsappCommentUpdateStatusRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="commentId" type="xsd:string" />
+        <part name="status" type="xsd:string" />
+    </message>
+    <message name="whatsappWhatsappCommentUpdateStatusResponse">
+        <part name="result" type="xsd:int" />
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="whatsappWhatsappList">
+            <documentation>Retrieve list of whatsapp</documentation>
+            <input message="typens:whatsappWhatsappListRequest" />
+            <output message="typens:whatsappWhatsappListResponse" />
+        </operation>
+        <operation name="whatsappWhatsappInfo">
+            <documentation>Retrieve whatsapp info</documentation>
+            <input message="typens:whatsappWhatsappInfoRequest" />
+            <output message="typens:whatsappWhatsappInfoResponse" />
+        </operation>
+        <operation name="whatsappWhatsappAdd">
+            <documentation>Add whatsapp</documentation>
+            <input message="typens:whatsappWhatsappAddRequest" />
+            <output message="typens:whatsappWhatsappAddResponse" />
+        </operation>
+        <operation name="whatsappWhatsappUpdate">
+            <documentation>Update whatsapp</documentation>
+            <input message="typens:whatsappWhatsappUpdateRequest" />
+            <output message="typens:whatsappWhatsappUpdateResponse" />
+        </operation>
+        <operation name="whatsappWhatsappRemove">
+            <documentation>Remove whatsapp</documentation>
+            <input message="typens:whatsappWhatsappRemoveRequest" />
+            <output message="typens:whatsappWhatsappRemoveResponse" />
+        </operation>
+            <operation name="whatsappWhatsappCommentList">
+            <documentation>Retrieve list of whatsapp comments</documentation>
+            <input message="typens:whatsappWhatsappCommentListRequest" />
+            <output message="typens:whatsappWhatsappCommentListResponse" />
+        </operation>
+        <operation name="whatsappWhatsappCommentUpdateStatus">
+            <documentation>Change whatsapp comment status</documentation>
+            <input message="typens:whatsappWhatsappCommentUpdateStatusRequest" />
+            <output message="typens:whatsappWhatsappCommentUpdateStatusResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="whatsappWhatsappList">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="whatsappWhatsappInfo">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="whatsappWhatsappAdd">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="whatsappWhatsappUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="whatsappWhatsappRemove">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+            <operation name="whatsappWhatsappCommentList">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="whatsappWhatsappCommentUpdateStatus">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+    <service name="{{var wsdl.name}}Service">
+        <port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}" />
+        </port>
+    </service>
+</definitions>

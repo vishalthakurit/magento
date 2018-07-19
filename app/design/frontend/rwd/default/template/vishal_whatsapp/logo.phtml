@@ -1,0 +1,113 @@
+<?php 
+$button_text = $this->getButtonText();
+$mobile_number = $this->getWhatsappNumber();
+$default_msg = $this->getDefaultMsg();
+$offline_msg = $this->getOfflineMsg();
+$button_color = $this->getButtonColor();
+$button_type = $this->getButtonType();
+$button_position = $this->getButtonPosition();
+$timing = $this->getScheduleTiming();
+$time_zone = $this->getDefaultTimeZone();
+$customer_grp_id = $this->getCustGrpId();
+$whatsapp_group_id = $this->getWhtsappGrpId();
+$enable = $this->isEnable();
+$selected_customer_grps = $this->getSelectedCustGrpId();
+$selected_pages = $this->getSelPages();
+$share_current_url = $this->enableShareUrl();
+$routeName = Mage::app()->getRequest()->getRouteName();
+$identifier = Mage::getSingleton('cms/page')->getIdentifier();
+$time_cond = false; $cust_grp_cond = false; $show_on_pages = false; 
+$startTime = ''; $endTime = ''; $url = '';
+$currentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+if($share_current_url){
+	$default_msg = $default_msg.' '.$currentUrl;
+}
+
+if($whatsapp_group_id) {
+	$url = 'https://chat.whatsapp.com/'.$whatsapp_group_id;
+}else {
+	$url = 'https://web.whatsapp.com/send?l=&amp;phone='.$mobile_number.'&amp;text='.$default_msg;
+}
+
+date_default_timezone_set($time_zone);
+
+if (in_array($customer_grp_id, $selected_customer_grps))
+{
+  	$cust_grp_cond = true;
+}
+
+$currentTime = new DateTime();
+$currDay = $currentTime->format('D');
+
+//echo "<pre>"; print_r($selected_pages);
+ 
+if(in_array($routeName, $selected_pages) || in_array($identifier, $selected_pages) || ($routeName == 'cms' && $identifier == 'home')) {
+    $show_on_pages = true;
+} 
+
+foreach ($timing as $key) {
+ 	if($currDay == $key['day']){
+ 		$startTime = $key['timeFrom'];
+ 		$endTime = $key['timeTill'];
+ 	}
+}
+
+
+$date = new DateTime();
+$date->modify($currDay);
+$calDateByDay = $date->format('Y-m-d');
+//echo "<br>"; echo $calDateByDay.''.$endTime; echo "=====<br>";
+// echo "<pre>"; print_r(new DateTime());
+// echo "<pre>"; print_r(new DateTime($calDateByDay.''.$startTime));
+// echo "<pre>"; print_r(new DateTime($calDateByDay.''.$endTime));
+
+    # current time is greater than 2010-05-15 16:00:00
+
+if (new DateTime() > new DateTime($calDateByDay.''.$startTime) && new DateTime() < new DateTime($calDateByDay.''.$endTime)) 
+{ 
+	$time_cond = true;
+}
+
+if($enable && $cust_grp_cond && $show_on_pages) {
+?>
+	<div class="vishal_whatsapp_icon">
+		<?php 
+		if($time_cond)
+		{
+			if($button_type == 'badge' || $button_type == 'sticky') { ?>
+
+				<a target="_blank" href="<?php echo $url; ?>">
+				    <div class="whatsapp whatsapp-<?php echo $button_type; ?> <?php echo $button_position; ?>" style="background-color: <?php echo '#'.$button_color; ?>">
+		        		<span style="background-color: <?php echo '#'.$button_color; ?>"><i class="whatsapp-icon"></i><?php echo $button_text; ?></span>
+		        	</div>
+				</a>
+
+			<?php } else { ?>
+
+				<a target="_blank" href="<?php echo $url; ?>" class="float float-<?php echo $button_position; ?> float-floating" style="background-color: <?php echo '#'.$button_color; ?>">
+			   		<i class="whatsapp-icon-3x" style="padding-right:0px!important;"></i>
+			    </a>
+			    <div class="label-container label-container-<?php echo $button_position; ?> float-floating">
+			     	<div class="label-text"><?php echo $button_text; ?></div>
+			      	<i class="icon icon-play label-arrow"></i>
+			   	</div>
+
+			<?php } 
+
+		} else { ?>
+
+			<a target="_blank" href="javascript:void(0);" class="float float-<?php echo $button_position; ?> float-floating" style="background-color: red;">
+		   		<i class="whatsapp-icon-3x" style="padding-right:0px!important;"></i>
+		    </a>
+		    <div class="label-container label-container-<?php echo $button_position; ?> float-floating">
+		     	<div class="label-text"><?php echo $offline_msg; ?></div>
+		      	<i class="icon icon-play label-arrow"></i>
+		   	</div>
+
+	<?php } ?>
+	    
+	</div>
+
+<?php } ?>
+	

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Vishal_Whatsapp extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Vishal
+ * @package        Vishal_Whatsapp
+ * @copyright      Copyright (c) 2018
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<layout>
+
+    <default translate="label" module="page">
+        <reference name="head">
+            <action method="addItem"><type>js_css</type><name>whatsapp/whatsapp.css</name></action>
+        </reference>
+        <reference name="content">  <!-- this is the name of the right column block -->
+            <block type="vishal_whatsapp/whatsapp" name="whatsapp_frontend_logo" template="vishal_whatsapp/logo.phtml" /> 
+        </reference>
+    </default>
+
+    <!-- ********************************************* -->
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="vishal_whatsapp"><name>whatsapp_comments</name><path>vishal_whatsapp/whatsapp_customer_comment</path><label>whatsapps Comments</label></action>
+        </reference>
+    </customer_account>
+    <vishal_whatsapp_whatsapp_index translate="label" module="vishal_whatsapp">
+        <label>Whatsapps list</label>
+        <update handle="page_two_columns_left" />
+        <reference name="content">
+            <block type="vishal_whatsapp/whatsapp_list" name="whatsapp_list" template="vishal_whatsapp/whatsapp/list.phtml" />
+        </reference>
+    </vishal_whatsapp_whatsapp_index>
+    <vishal_whatsapp_whatsapp_view translate="label" module="vishal_whatsapp">
+        <label>Whatsapp view page</label>
+        <update handle="page_two_columns_left" />
+        <reference name="content">
+            <block type="vishal_whatsapp/whatsapp_view" name="whatsapp_view" template="vishal_whatsapp/whatsapp/view.phtml" />
+            <block type="vishal_whatsapp/whatsapp_comment_list" name="whatsapp.comments_list" as="whatsapp_comment_list" template="vishal_whatsapp/whatsapp/comment/list.phtml">
+                <block type="vishal_whatsapp/whatsapp_comment_form" name="comment_form" as="comment_form" template="vishal_whatsapp/whatsapp/comment/form.phtml" />
+            </block>
+        </reference>
+    </vishal_whatsapp_whatsapp_view>
+    <vishal_whatsapp_whatsapp_rss translate="label" module="vishal_whatsapp">
+        <label>Whatsapps rss feed</label>
+        <block type="vishal_whatsapp/whatsapp_rss" output="toHtml" name="vishal_whatsapp.whatsapp.rss" />
+    </vishal_whatsapp_whatsapp_rss>
+    <rss_index_index>
+        <reference name="content">
+            <block type="vishal_whatsapp/rss" name="whatsapp.rss" template="vishal_whatsapp/rss.phtml">
+                <action method="addFeed" ifconfig="vishal_whatsapp/whatsapp/rss" translate="label" module="vishal_whatsapp">
+                    <label>Whatsapps</label>
+                    <url helper="vishal_whatsapp/whatsapp/getRssUrl" />
+                </action>
+            </block>
+        </reference>
+    </rss_index_index>
+    <vishal_whatsapp_whatsapp_customer_comment_index translate="label" module="vishal_whatsapp">
+        <label>My Whatsapps comments</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="vishal_whatsapp/whatsapp_customer_comment_list" name="customer_whatsapp_comments" template="vishal_whatsapp/whatsapp/customer/comment/list.phtml"/>
+        </reference>
+    </vishal_whatsapp_whatsapp_customer_comment_index>
+    <vishal_whatsapp_whatsapp_customer_comment_view translate="label" module="vishal_whatsapp">
+        <label>My Whatsapps comment view</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="vishal_whatsapp/whatsapp_customer_comment_view" name="customer_whatsapp_comment" template="vishal_whatsapp/whatsapp/customer/comment/view.phtml"/>
+        </reference>
+    </vishal_whatsapp_whatsapp_customer_comment_view>
+</layout>

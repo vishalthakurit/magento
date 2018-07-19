@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    //<![CDATA[
+    function whatsappschedule() {
+
+        params = {
+            schedule_time: $('vishal_whatsappchat_display_schedule').value
+        };
+
+        new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
+            parameters: params,
+            dataType: 'json',
+            type:'POST',
+            onSuccess: function(data){
+
+            // if (data.responseText){
+            //     alert('Checked')
+            // }
+            }
+        });
+    }
+    
+    //]]>
+</script>
+
+<?php echo $this->getButtonHtml() ?>
